@@ -139,7 +139,6 @@
     // test if any rows on this board contain conflicts
     hasAnyRowConflicts: function() {
       var rowsLength = this.n();
-      console.log(rowsLength);
       for (var i = 0; i < rowsLength; i++) {
         if (this.hasRowConflictAt(i)) {
           return true;
@@ -197,27 +196,49 @@
       // rows and columns increment at same rate
       // could create a diagonal array (making sure index is on board)
       // great place to refactor!
+      var total = 0;
       var majorInd = majorDiagonalColumnIndexAtFirstRow;
       var rows = this.allRows();
       var diag = [];
+      var startingRow = 0;
+      var startingColumn = 0;
+      var diagLength = (rows.length - Math.abs(majorInd));
+      // put into a ternary later
       if(majorInd < 0){
-        Math.abs(majorInd)
+        startingRow = Math.abs(majorInd);
       }
-      
+      if(majorInd > 0){
+        startingColumn = Math.abs(majorInd);
+      }
       // if our majorInd is negative, we want to start down majorInd rows
       // add absolute value of major ind to our row increment
-      for(var i=0; i<rows.length; i++){
+      //we SHOULD make this jump, we could? refactor with underscore
+      for(var i=0; i<diagLength; i++){
         //check to see if defined
-        this.isInBounds()
-
-        diag.push(rows[majorInd+i][i]);
+        diag.push(rows[startingRow+i][startingColumn+i]);
       }
-
+      //do similar stuff to the array
+      for (var j = 0; j < diag.length; j++) {
+        total += diag[j];
+        // change comparison operator to equals for optimization
+        if (total > 1) {
+          return true;
+        }
+      }
       return false; // fixme
     },
 
     // test if any major diagonals on this board contain conflicts
     hasAnyMajorDiagonalConflicts: function() {
+      // calls hMDCA for every possible major diagonal
+      var n = this.n();
+      var diagsNum = n*2-1;
+      for(var i = 0; i<diagsNum; i++){
+        // starts at the diag containing bottom left corner
+        if(this.hasMajorDiagonalConflictAt(i-n+1)){
+          return true;
+        }
+      }
       return false; // fixme
     },
 
@@ -227,11 +248,47 @@
     //
     // test if a specific minor diagonal on this board contains a conflict
     hasMinorDiagonalConflictAt: function(minorDiagonalColumnIndexAtFirstRow) {
+      var rows = this.allRows();
+      var diag = [];
+      var total = 0;
+      var n = this.n();
+      var minorInd = minorDiagonalColumnIndexAtFirstRow;
+      var startingRow=0;
+      var startingColumn = minorInd;
+      // if minorInd is greaterthan/equal to n, startingCol = n-1
+      if(minorInd >= n){
+        startingColumn = n-1;
+        startingRow = minorInd - n +1;
+      }
+      // as starting index goes up, diag length goes up, until starting index >= n
+      var diagLength = n - Math.abs(minorInd - n + 1);
+      for(var i=0; i<diagLength; i++){
+        //check to see if defined
+        diag.push(rows[startingRow+i][startingColumn-i]);
+      }
+      //do similar stuff to the array
+      console.log(diag);
+      for (var j = 0; j < diag.length; j++) {
+        total += diag[j];
+        // change comparison operator to equals for optimization
+        if (total > 1) {
+          return true;
+        }
+      }
+      
       return false; // fixme
     },
 
     // test if any minor diagonals on this board contain conflicts
     hasAnyMinorDiagonalConflicts: function() {
+      var n = this.n();
+      var diagsNum = n*2-1;
+      for(var i = 0; i<diagsNum; i++){
+        // starts at the diag containing bottom left corner
+        if(this.hasMinorDiagonalConflictAt(i)){
+          return true;
+        }
+      }
       return false; // fixme
     }
 
