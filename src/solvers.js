@@ -47,52 +47,64 @@ window.findNRooksSolution = function(num) {
 // Return the number of nxn chessboards that exist, with n rooks placed such that none
 // of them can attack each other.
 window.countNRooksSolutions = function(num) {
-  // make solutions array
-  var solutionCount = 0;
-  var ourBoard = new Board({n: num});
-  var maxIndex = num - 1;
+  // // make solutions array
+  // var solutionCount = 0;
+  // // var ourBoard = new Board({n: num});
+  // var maxIndex = num - 1;
 
-  // define recurse function
-  var recurse = function(r,c) {
-    var rooksCount = 0;
-    for(var i=r; i<num; i++){
-      //for every spaceinrow:
-      for(var j = c; j<num; j++){
-        //place a piece
-        ourBoard.setPiece(i,j,1);
-        rooksCount++;
-        //check for horiz/vertical conflicts at space(r,c)
-        if(ourBoard.hasAnyColConflicts() || ourBoard.hasAnyRowConflicts()){
-          ourBoard.setPiece(i,j,0);
-          rooksCount--;
-        }
-        if (rooksCount === num) {
-          solutionCount++;
-          if ((c === maxIndex) && (r === maxIndex)) {
-            return solutionCount;
-          }
-          // if rows has reached length of num elements
-          if (c < maxIndex) {
-            // increment column
-            c++;
-            recurse(r,c);
-          }
-          // if 
-          if (c === maxIndex) {
-            c = 0;
-            r++;
-          }
-          // recurse and re-initialize board at incremented coords
-          recurse(r, c);
-        }
-      }
-    }
+  // // define recurse function
+  // var recurse = function(r,c) {
+  //   var ourBoard = new Board({n: num});
+  //   var rooksCount = 1;
+  //   ourBoard.setPiece(r,c,1);
+  //   // whats this loop accomplishing?
+  //   // loop through columns until columns is less than num
+  //   for(var i=0; i<num; i++){
+  //     //for every spaceinrow:
+  //     for(var j = 0; j<num; j++){
+  //       //place a piece
+  //       ourBoard.setPiece(i,j,1);
+  //       rooksCount++;
+  //       //check for horiz/vertical conflicts at space(r,c)
+  //       if(ourBoard.hasAnyColConflicts() || ourBoard.hasAnyRowConflicts()){
+  //         ourBoard.setPiece(i,j,0);
+  //         rooksCount--;
+  //       }
+  //       if (rooksCount === num) {
+  //         solutionCount++;
+  //         if ((c === maxIndex) && (r === maxIndex)) {
+  //           return solutionCount;
+  //         }
+  //         // if rows has reached length of num elements
+  //         if (c < maxIndex) {
+  //           // increment column
+  //           c++;
+  //           recurse(r,c);
+  //         }
+  //         // if 
+  //         if (c === maxIndex) {
+  //           c = 0;
+  //           r++;
+  //           recurse(r, c);
+  //         }
+  //         // recurse and re-initialize board at incremented coords
+  //         // recurse(r, c);
+  //       }
+  //     }
+  //   }
+  // }
+  // recurse(0,0);
+  //*NEW ATTEMPT*
+  var solutions = 0;
+  var ourBoard = new Board ({n:num});
+  function recursor(n, solution){
+    //if it's not the smallest possible board, get the ROWS of a smaller board
+    //
   }
-  recurse(0,0)
 
-  var solutionCount = undefined; //fixme
+  // var solutionCount = undefined; //fixme
 
-  console.log('Number of solutions for ' + n + ' rooks:', solutionCount);
+  console.log('Number of solutions for ' + num + ' rooks:', solutionCount);
   return solutionCount;
 };
 
