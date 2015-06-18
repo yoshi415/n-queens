@@ -267,7 +267,6 @@
         diag.push(rows[startingRow+i][startingColumn-i]);
       }
       //do similar stuff to the array
-      console.log(diag);
       for (var j = 0; j < diag.length; j++) {
         total += diag[j];
         // change comparison operator to equals for optimization
